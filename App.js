@@ -52,30 +52,39 @@ const App = () => {
   const [user, setUser] = useState('darknoon');
   const [userInput, setUserInput] = useState(user);
   const [data, setData] = useState([]);
+  const [isRefreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     console.log('UseEffect');
+    getFollowers();
+  }, [user]);
 
+  const getFollowers = () => {
+    setRefreshing(true);
     client
       .query({
         query: gql`
-        query {
-          connections(query: {userName: {userName: "${user}"}}) {
-            _id
-            who {
-              userName
-              userEmail
-              userPhone
-            }
+      query {
+        connections(query: {userName: {userName: "${user}"}}) {
+          _id
+          who {
+            userName
+            userEmail
+            userPhone
           }
         }
-      `,
+      }
+    `,
       })
       .then(result => {
         setData(result.data.connections);
+        setRefreshing(false);
       })
-      .catch(e => console.log(e));
-  }, [user]);
+      .catch(e => {
+        console.log(e);
+        setRefreshing(false);
+      });
+  };
 
   const changeUser = () => {
     console.log('Run');
@@ -123,6 +132,8 @@ const App = () => {
             <Text style={{marginStart: 10}}>{item.item.who.userName}</Text>
           </View>
         )}
+        refreshing={isRefreshing}
+        onRefresh={getFollowers}
       />
     </SafeAreaView>
   );
