@@ -28,9 +28,8 @@ import {
 
 import {useQuery, gql} from '@apollo/client';
 
-const ProfileScreen = ({client}) => {
-  const [user, setUser] = useState('darknoon');
-  const [userInput, setUserInput] = useState(user);
+const ProfileScreen = ({route, navigation}) => {
+  const {userId} = route.params;
   //   const [data, setData] = useState([]);
   const [isRefreshing, setRefreshing] = useState(false);
 
@@ -79,69 +78,62 @@ const ProfileScreen = ({client}) => {
   //   }
   // `;
 
-  const followersQuery = gql`
-    query {
-      followers(userName: "${user}", skip: 0, limit: 4) {
-        userName
-      }
-    }
-  `;
+  const profileQuery = gql`
+  query {
+  profile(userId: "${userId}") {
+    _id
+    userEmail
+    userName
+    profilepicture
+    bio
+    postCount
+    visibility
+    followerCount
+    followingCount
+  }
+}
+`;
 
-  const {loading, error, data, refetch} = useQuery(followersQuery);
+  const {loading, error, data, refetch} = useQuery(profileQuery);
 
   if (loading) return <Text>Lodaing..</Text>;
   if (error) return <Text>{error.message}</Text>;
 
   return (
     <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
-      <StatusBar translucent={true} backgroundColor="lightblue" />
+      <StatusBar translucent={true} />
       <View style={styles.info}>
+        <TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+            <Text>Followings</Text>
+            <Text>{data.profile.followingCount}</Text>
+          </View>
+        </TouchableOpacity>
         <TouchableOpacity onPress={() => alert('Change User')}>
           <Image
             style={{width: 100, height: 100}}
             source={require('../assets/defaultUserPic.png')}
           />
         </TouchableOpacity>
-        <TextInput
-          value={userInput}
-          placeholder="Enter UserName"
-          style={{textAlign: 'center'}}
-          onChangeText={value => setUserInput(value)}
-        />
-        {user !== userInput ? (
-          <Button title="OK!" onPress={() => setUser(userInput)} />
-        ) : null}
-      </View>
-      <Text style={{fontSize: 24, padding: 10}}>Followers</Text>
-      <FlatList
-        style={{flex: 1, width: '100%'}}
-        data={data.followers}
-        renderItem={item => (
-          <View style={styles.item}>
-            <Image
-              style={{width: 50, height: 50}}
-              source={require('../assets/defaultUserPic.png')}
-            />
-            <Text style={{marginStart: 10}}>{item.item.userName}</Text>
-            <View style={{position: 'absolute', right: 0, marginRight: 10}}>
-              <Button title="Remove" />
-            </View>
+        <TouchableOpacity>
+          <View style={{alignItems: 'center'}}>
+            <Text>Followers</Text>
+            <Text>{data.profile.followerCount}</Text>
           </View>
-        )}
-        refreshing={false}
-        onRefresh={() => refetch()}
-      />
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   info: {
+    flexDirection: 'row',
     backgroundColor: 'lightblue',
     width: '100%',
-    height: '30%',
+    minHeight: '30%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
   item: {
     flexDirection: 'row',
@@ -153,3 +145,24 @@ const styles = StyleSheet.create({
 });
 
 export default ProfileScreen;
+
+{
+  /* <FlatList
+style={{flex: 1, width: '100%'}}
+data={data.profile}
+renderItem={item => (
+  <View style={styles.item}>
+    <Image
+      style={{width: 50, height: 50}}
+      source={require('../assets/defaultUserPic.png')}
+    />
+    <Text style={{marginStart: 10}}>{item.item.userName}</Text>
+    <View style={{position: 'absolute', right: 0, marginRight: 10}}>
+      <Button title="Remove" />
+    </View>
+  </View>
+)}
+refreshing={false}
+onRefresh={() => refetch()}
+/> */
+}
