@@ -8,11 +8,12 @@
 
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
 import React from 'react';
-import {Text} from 'react-native';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import SearchScreen from './screens/SearchScreen';
 
 const client = new ApolloClient({
   // headers: {
@@ -24,23 +25,46 @@ const client = new ApolloClient({
 });
 
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
       <ApolloProvider client={client}>
-        <Stack.Navigator>
-          <Stack.Screen
+        <Tab.Navigator
+          screenOptions={({route}) => ({
+            tabBarIcon: ({focused, color, size}) => {
+              return (
+                <MaterialCommunityIcons name="home" color={color} size={size} />
+              );
+            },
+            tabBarActiveTintColor: 'tomato',
+            tabBarInactiveTintColor: 'gray',
+            tabBarShowLabel: false,
+          })}>
+          <Tab.Screen
             name="Home"
             component={HomeScreen}
-            options={{title: 'Prezent'}}
+            options={{
+              title: 'Prezent',
+              headerStyle: {
+                backgroundColor: 'transparent',
+                elevation: 0,
+              },
+              headerTitleAlign: 'center',
+            }}
           />
-          <Stack.Screen
+          <Tab.Screen
+            name="Search"
+            component={SearchScreen}
+            options={{header: () => null}}
+          />
+          <Tab.Screen
             name="Profile"
             component={ProfileScreen}
-            options={({route}) => ({title: route.params.title})}
+            options={{header: () => null}}
           />
-        </Stack.Navigator>
+        </Tab.Navigator>
       </ApolloProvider>
     </NavigationContainer>
   );
