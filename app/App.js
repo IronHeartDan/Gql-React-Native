@@ -14,6 +14,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchScreen from './screens/SearchScreen';
+import {Text} from 'react-native';
 
 const client = new ApolloClient({
   // headers: {
@@ -34,17 +35,16 @@ const App = () => {
         <Tab.Navigator
           screenOptions={({route}) => ({
             tabBarIcon: ({focused, color, size}) => {
-              return (
-                <MaterialCommunityIcons name="home" color={color} size={size} />
-              );
+              return <Text>{route.name}</Text>;
             },
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
+            tabBarActiveTintColor: 'black',
+            tabBarInactiveTintColor: 'transparent',
             tabBarShowLabel: false,
           })}>
           <Tab.Screen
-            name="Home"
+            name="HomeScreen"
             component={HomeScreen}
+            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
             options={{
               title: 'Prezent',
               headerStyle: {
@@ -53,15 +53,18 @@ const App = () => {
               },
               headerTitleAlign: 'center',
             }}
-          />
-          <Tab.Screen
-            name="Search"
-            component={SearchScreen}
             options={{header: () => null}}
           />
           <Tab.Screen
-            name="Profile"
+            name="SearchScreen"
+            component={SearchScreen}
+            initialParams={{client: client}}
+            options={{header: () => null}}
+          />
+          <Tab.Screen
+            name="ProfileScreen"
             component={ProfileScreen}
+            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
             options={{header: () => null}}
           />
         </Tab.Navigator>

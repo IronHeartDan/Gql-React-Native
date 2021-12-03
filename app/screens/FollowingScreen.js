@@ -3,8 +3,7 @@ import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
 import {useQuery, gql} from '@apollo/client';
 
 const FollowingScreen = ({route, navigation}) => {
-  // const {userId} = route.params;
-  const userId = '618a1d2f194fbab325ff5427';
+  const {userId} = route.params;
 
   const userPostsQuery = gql`
 query {

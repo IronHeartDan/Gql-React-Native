@@ -11,10 +11,8 @@ import {
 import {useQuery, gql} from '@apollo/client';
 import ProfileScreenHeader from './ProfileScreenHeader';
 
-const ProfileScreenPosts = ({navigation}) => {
-  // const {userId} = route.params;
-  // const userId = '618a1d2f194fbab325ff5427';
-  const userId = '618a1d63194fbab325ff5429';
+const ProfileScreenPosts = ({route, navigation}) => {
+  const {userId} = route.params;
   const userPostsQuery = gql`
     query{
       userPosts(userId: "${userId}") {

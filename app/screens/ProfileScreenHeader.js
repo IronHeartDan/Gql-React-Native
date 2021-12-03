@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import {View, Text, StyleSheet, Image} from 'react-native';
 
 import {useQuery, gql} from '@apollo/client';
 
@@ -26,7 +26,7 @@ const ProfileScreenHeader = ({userId, navigation}) => {
   if (error) return <Text>{error.message}</Text>;
   return (
     <View style={styles.info}>
-      <TouchableOpacity
+      <View
         onPress={() =>
           navigation.navigate('FollowingScreen', {userId: userId})
         }>
@@ -34,20 +34,21 @@ const ProfileScreenHeader = ({userId, navigation}) => {
           <Text>Followings</Text>
           <Text>{data.profile.followingCount}</Text>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => alert('Change User')}>
+      </View>
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
         <Image
           style={{width: 120, height: 120}}
           source={require('../assets/defaultUserPic.png')}
         />
-      </TouchableOpacity>
-      <TouchableOpacity
+        <Text style={{padding: 5}}>{data.profile.userName}</Text>
+      </View>
+      <View
         onPress={() => navigation.navigate('FollowerScreen', {userId: userId})}>
         <View style={{alignItems: 'center'}}>
           <Text>Followers</Text>
           <Text>{data.profile.followerCount}</Text>
         </View>
-      </TouchableOpacity>
+      </View>
     </View>
   );
 };
