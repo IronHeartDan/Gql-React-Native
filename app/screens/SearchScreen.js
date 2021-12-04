@@ -23,26 +23,28 @@ import ProfileScreen from './ProfileScreen';
 
 const SearchScreen = ({route}) => {
   const Stack = createNativeStackNavigator();
-  const client = route.params.client;
-  const [users, setUsers] = useState([]);
-  const searchUsers = async userName => {
-    setUsers([]);
-    if (userName) {
-      let data = await client.query({
-        query: gql`
-    query SearchUser {
-      searchUser(userName: "${userName}") {
-      _id
-      userName
-      }
-    }
-    `,
-      });
-      setUsers(data.data.searchUser);
-    }
-  };
+  const {userId, client} = route.params;
 
   const Search = ({navigation}) => {
+    const [users, setUsers] = useState([]);
+
+    const searchUsers = async userName => {
+      if (userName) {
+        let data = await client.query({
+          query: gql`
+      query SearchUser {
+        searchUser(userName: "${userName}") {
+        _id
+        userName
+        }
+      }
+      `,
+        });
+        setUsers(data.data.searchUser);
+      } else {
+        setUsers([]);
+      }
+    };
     return (
       <View style={{flex: 1}}>
         <TextInput
@@ -54,27 +56,32 @@ const SearchScreen = ({route}) => {
           style={{flex: 1}}
           data={users}
           renderItem={item => (
-            <View
-              style={{
-                width: '100%',
-                flexDirection: 'row',
-                padding: 10,
-                alignItems: 'center',
+            <TouchableOpacity
+              onPress={() => {
+                navigation.push('Profile', {
+                  userId: userId,
+                  title: item.item.userName,
+                  connection: {
+                    userId: userId,
+                    who: item.item._id,
+                  },
+                  client: client,
+                });
               }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.push('Profile', {
-                    userId: item.item._id,
-                    title: item.item.userName,
-                  });
+              <View
+                style={{
+                  width: '100%',
+                  flexDirection: 'row',
+                  padding: 10,
+                  alignItems: 'center',
                 }}>
                 <Image
                   style={{width: 50, height: 50}}
                   source={require('../assets/defaultUserPic.png')}
                 />
-              </TouchableOpacity>
-              <Text style={{padding: 10}}>{item.item.userName}</Text>
-            </View>
+                <Text style={{padding: 10}}>{item.item.userName}</Text>
+              </View>
+            </TouchableOpacity>
           )}
         />
       </View>

@@ -14,7 +14,12 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchScreen from './screens/SearchScreen';
-import {Text} from 'react-native';
+import {Image, Text} from 'react-native';
+import AddPostScreen from './screens/AddPostScreen';
+const ic_home = require('./assets/ic_home.png');
+const ic_search = require('./assets/ic_search.png');
+const ic_add = require('./assets/ic_add.png');
+const ic_account = require('./assets/ic_account.png');
 
 const client = new ApolloClient({
   // headers: {
@@ -35,9 +40,55 @@ const App = () => {
         <Tab.Navigator
           screenOptions={({route}) => ({
             tabBarIcon: ({focused, color, size}) => {
-              return <Text>{route.name}</Text>;
+              switch (route.name) {
+                case 'HomeScreen':
+                  return (
+                    <Image
+                      style={{width: 25, height: 25}}
+                      resizeMode="contain"
+                      source={ic_home}
+                    />
+                  );
+
+                case 'SearchScreen':
+                  return (
+                    <Image
+                      style={{width: 25, height: 25}}
+                      resizeMode="contain"
+                      source={ic_search}
+                    />
+                  );
+
+                case 'AddPostScreen':
+                  return (
+                    <Image
+                      style={{width: 25, height: 25}}
+                      resizeMode="contain"
+                      source={ic_add}
+                    />
+                  );
+
+                case 'ProfileScreen':
+                  return (
+                    <Image
+                      style={{width: 25, height: 25}}
+                      resizeMode="contain"
+                      source={ic_account}
+                    />
+                  );
+
+                default:
+                  return (
+                    <Image
+                      style={{width: 25, height: 25}}
+                      resizeMode="contain"
+                      source={require('./assets/ic_home.png')}
+                    />
+                  );
+              }
             },
-            tabBarActiveTintColor: 'black',
+            tabBarActiveBackgroundColor: 'lightblue',
+            tabBarActiveTintColor: 'transparent',
             tabBarInactiveTintColor: 'transparent',
             tabBarShowLabel: false,
           })}>
@@ -58,13 +109,19 @@ const App = () => {
           <Tab.Screen
             name="SearchScreen"
             component={SearchScreen}
-            initialParams={{client: client}}
+            initialParams={{client: client, userId: '618a1d2f194fbab325ff5427'}}
+            options={{header: () => null}}
+          />
+          <Tab.Screen
+            name="AddPostScreen"
+            component={AddPostScreen}
+            initialParams={{client: client, userId: '618a1d2f194fbab325ff5427'}}
             options={{header: () => null}}
           />
           <Tab.Screen
             name="ProfileScreen"
             component={ProfileScreen}
-            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
+            initialParams={{userId: '618a1d2f194fbab325ff5427', user: true}}
             options={{header: () => null}}
           />
         </Tab.Navigator>

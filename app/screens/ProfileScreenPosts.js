@@ -12,7 +12,7 @@ import {useQuery, gql} from '@apollo/client';
 import ProfileScreenHeader from './ProfileScreenHeader';
 
 const ProfileScreenPosts = ({route, navigation}) => {
-  const {userId} = route.params;
+  const {userId, connection, client} = route.params;
   const userPostsQuery = gql`
     query{
       userPosts(userId: "${userId}") {
@@ -37,7 +37,12 @@ const ProfileScreenPosts = ({route, navigation}) => {
     <SafeAreaView style={{flex: 1, alignItems: 'center'}}>
       <FlatList
         ListHeaderComponent={
-          <ProfileScreenHeader userId={userId} navigation={navigation} />
+          <ProfileScreenHeader
+            userId={userId}
+            navigation={navigation}
+            client={client}
+            connection={connection}
+          />
         }
         style={{flex: 1, width: '100%'}}
         data={data.userPosts}
