@@ -22,6 +22,7 @@ import ProfileScreenPosts from './ProfileScreenPosts';
 import ProfileScreen from './ProfileScreen';
 
 const HomeScreen = ({route, navigation}) => {
+
   const {userId} = route.params;
   const Stack = createNativeStackNavigator();
 
@@ -83,11 +84,25 @@ const HomeScreen = ({route, navigation}) => {
     );
   }
 
+  const ItemSeparatorView = () => {
+    return (
+      // Flat List Item Separator
+      <View
+        style={{
+          height: 1,
+          width: '100%',
+          backgroundColor: '#C8C8C8',
+        }}
+      />
+    );
+  };
+
   const Home = ({navigation}) => {
     return (
       <SafeAreaView>
         <FlatList
           data={data.homePosts}
+          ItemSeparatorComponent={ItemSeparatorView}
           renderItem={item => (
             <View style={styles.post}>
               <View style={styles.postInfo}>

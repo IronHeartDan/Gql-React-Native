@@ -91,6 +91,8 @@ const App = () => {
             tabBarActiveTintColor: 'transparent',
             tabBarInactiveTintColor: 'transparent',
             tabBarShowLabel: false,
+
+            tabBarHideOnKeyboard: true,
           })}>
           <Tab.Screen
             name="HomeScreen"
@@ -121,7 +123,7 @@ const App = () => {
           <Tab.Screen
             name="ProfileScreen"
             component={ProfileScreen}
-            initialParams={{userId: '618a1d2f194fbab325ff5427', user: true}}
+            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
             options={{header: () => null}}
           />
         </Tab.Navigator>

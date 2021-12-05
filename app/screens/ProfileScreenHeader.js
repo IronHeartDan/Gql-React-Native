@@ -54,6 +54,8 @@ const ProfileScreenHeader = ({userId, navigation, connection}) => {
         <Text style={{padding: 5}}>{data.profile.userName}</Text>
         {connection ? (
           <Text style={{padding: 5, color: 'blue'}}>Following</Text>
+        ) : typeof connection == 'undefined' ? (
+          <></>
         ) : (
           <Button title="Follow" />
         )}
