@@ -9,8 +9,10 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  StatusBar,
   TextInput,
   Button,
+  Dimensions,
 } from 'react-native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
@@ -127,13 +129,14 @@ const AddPostScreen = () => {
   };
 
   const addDetails = ({route}) => {
+    var {height, width} = Dimensions.get('window');
     const {uri} = route.params;
     return (
-      <View style={{flex: 1}}>
+      <View style={{minHeight: height - StatusBar.currentHeight}}>
         <View style={{flex: 1}}>
           <Image
             style={{width: '100%', height: '100%'}}
-            resizeMode="contain"
+            resizeMode="cover"
             source={{uri: uri}}
           />
         </View>
@@ -146,9 +149,11 @@ const AddPostScreen = () => {
         />
         <View style={{flex: 1}}>
           <TextInput
-            multiline
-            numberOfLines={10}
-            placeholder="useless placeholder"
+            style={{
+              flex: 1,
+              textAlignVertical: 'top',
+            }}
+            placeholder="Type Here..."
           />
           <Button title="Upload" />
         </View>

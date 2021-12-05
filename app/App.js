@@ -7,19 +7,21 @@
  */
 
 import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchScreen from './screens/SearchScreen';
-import {Image, Text} from 'react-native';
+import {Button, Dimensions, Image, Text, TextInput, View} from 'react-native';
 import AddPostScreen from './screens/AddPostScreen';
 const ic_home = require('./assets/ic_home.png');
 const ic_search = require('./assets/ic_search.png');
 const ic_add = require('./assets/ic_add.png');
 const ic_account = require('./assets/ic_account.png');
+
+import auth from '@react-native-firebase/auth';
 
 const client = new ApolloClient({
   // headers: {
@@ -34,6 +36,67 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
+  var {height, width} = Dimensions.get('window');
+  const [user, setUser] = useState(null);
+  const [phone, setPhone] = useState(null);
+
+  useEffect(() => {
+    if (auth().currentUser) {
+      setUser(auth().currentUser);
+    }
+  }, []);
+
+  const sendOTP = async () => {
+    if (!phone) {
+      alert('Enter Valid Phone');
+    } else {
+      let code = await auth().signInWithPhoneNumber(`+91${phone}`);
+      console.log(code);
+    }
+  };
+
+  // if (!user) {
+  //   return (
+  //     <View style={{height: '100%', backgroundColor: 'white'}}>
+  //       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+  //         <Text style={{fontSize: 50}}>Login</Text>
+  //       </View>
+  //       <View
+  //         style={{
+  //           alignItems: 'center',
+  //           justifyContent: 'center',
+  //         }}>
+  //         <Image
+  //           style={{width: '100%', height: 250}}
+  //           resizeMode="contain"
+  //           source={require('./assets/asset_login.png')}
+  //         />
+  //       </View>
+  //       <View
+  //         style={{
+  //           flex: 1,
+  //           alignItems: 'center',
+  //           justifyContent: 'flex-end',
+  //           padding: 10,
+  //         }}>
+  //         <TextInput
+  //           style={{padding: 10, width: '100%'}}
+  //           placeholder="Phone"
+  //           keyboardType="number-pad"
+  //           maxLength={10}
+  //           onChangeText={text =>
+  //             text.length == 10 ? setPhone(text) : setPhone(null)
+  //           }
+  //         />
+
+  //         <View style={{width: '100%'}}>
+  //           <Button onPress={() => sendOTP()} title="Login" />
+  //         </View>
+  //       </View>
+  //     </View>
+  //   );
+  // }
+
   return (
     <NavigationContainer>
       <ApolloProvider client={client}>
