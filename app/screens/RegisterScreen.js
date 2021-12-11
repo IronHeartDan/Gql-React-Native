@@ -33,8 +33,15 @@ const RegisterScreen = ({route}) => {
         if (res.data) {
           auth()
             .createUserWithEmailAndPassword(email, phone)
-            .then(credentials => {
-              console.log(credentials);
+            .then(async credentials => {
+              let phoneNumber = `+91${phone}`;
+              console.log(phoneNumber);
+              try {
+                let code = await auth().verifyPhoneNumber(phoneNumber);
+                console.log(code);
+              } catch (error) {
+                console.error(error);
+              }
             })
             .catch(error => console.error(error));
         } else {

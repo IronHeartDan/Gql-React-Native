@@ -2,9 +2,12 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {View, Text, Image, TextInput, Button} from 'react-native';
 import LoginScreen from './LoginScreen';
-import RegisterScreen from './RegisterScreen';
 
-const Authentication = ({client}) => {
+import {useSelector} from 'react-redux';
+import {selectClient} from '../redux/slicers/GqlClient';
+import RegisterScreen from './Auth/RegisterScreen';
+
+const Authentication = () => {
   //   const sendOTP = async () => {
   //     if (!phone) {
   //       alert('Enter Valid Phone');
@@ -18,6 +21,8 @@ const Authentication = ({client}) => {
   //     }
   //   };
 
+  const client = useSelector(selectClient);
+
   const stack = createNativeStackNavigator();
 
   return (
@@ -25,16 +30,8 @@ const Authentication = ({client}) => {
       screenOptions={{
         header: () => null,
       }}>
-      <stack.Screen
-        name="LogIn"
-        component={LoginScreen}
-        initialParams={{client: client}}
-      />
-      <stack.Screen
-        name="Register"
-        component={RegisterScreen}
-        initialParams={{client: client}}
-      />
+      <stack.Screen name="LogIn" component={LoginScreen} />
+      <stack.Screen name="Register" component={RegisterScreen} />
     </stack.Navigator>
   );
 };

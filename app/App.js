@@ -22,6 +22,8 @@ const ic_account = require('./assets/ic_account.png');
 
 import auth from '@react-native-firebase/auth';
 import Authentication from './screens/Authentication';
+import {Provider} from 'react-redux';
+import Store from './redux/store/Store';
 
 const client = new ApolloClient({
   // headers: {
@@ -54,109 +56,117 @@ const App = () => {
 
   if (!user) {
     return (
-      <NavigationContainer>
-        <ApolloProvider client={client}>
-          <Authentication client={client} />
-        </ApolloProvider>
-      </NavigationContainer>
+      <Provider store={Store}>
+        <NavigationContainer>
+          <Authentication />
+        </NavigationContainer>
+      </Provider>
     );
   }
 
   return (
-    <NavigationContainer>
-      <ApolloProvider client={client}>
-        <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              switch (route.name) {
-                case 'HomeScreen':
-                  return (
-                    <Image
-                      style={{width: 25, height: 25}}
-                      resizeMode="contain"
-                      source={ic_home}
-                    />
-                  );
+    <Provider store={Store}>
+      <NavigationContainer>
+        <ApolloProvider client={client}>
+          <Tab.Navigator
+            screenOptions={({route}) => ({
+              tabBarIcon: ({focused, color, size}) => {
+                switch (route.name) {
+                  case 'HomeScreen':
+                    return (
+                      <Image
+                        style={{width: 25, height: 25}}
+                        resizeMode="contain"
+                        source={ic_home}
+                      />
+                    );
 
-                case 'SearchScreen':
-                  return (
-                    <Image
-                      style={{width: 25, height: 25}}
-                      resizeMode="contain"
-                      source={ic_search}
-                    />
-                  );
+                  case 'SearchScreen':
+                    return (
+                      <Image
+                        style={{width: 25, height: 25}}
+                        resizeMode="contain"
+                        source={ic_search}
+                      />
+                    );
 
-                case 'AddPostScreen':
-                  return (
-                    <Image
-                      style={{width: 25, height: 25}}
-                      resizeMode="contain"
-                      source={ic_add}
-                    />
-                  );
+                  case 'AddPostScreen':
+                    return (
+                      <Image
+                        style={{width: 25, height: 25}}
+                        resizeMode="contain"
+                        source={ic_add}
+                      />
+                    );
 
-                case 'ProfileScreen':
-                  return (
-                    <Image
-                      style={{width: 25, height: 25}}
-                      resizeMode="contain"
-                      source={ic_account}
-                    />
-                  );
+                  case 'ProfileScreen':
+                    return (
+                      <Image
+                        style={{width: 25, height: 25}}
+                        resizeMode="contain"
+                        source={ic_account}
+                      />
+                    );
 
-                default:
-                  return (
-                    <Image
-                      style={{width: 25, height: 25}}
-                      resizeMode="contain"
-                      source={require('./assets/ic_home.png')}
-                    />
-                  );
-              }
-            },
-            tabBarActiveBackgroundColor: 'lightblue',
-            tabBarActiveTintColor: 'transparent',
-            tabBarInactiveTintColor: 'transparent',
-            tabBarShowLabel: false,
-
-            tabBarHideOnKeyboard: true,
-          })}>
-          <Tab.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
-            options={{
-              title: 'Prezent',
-              headerStyle: {
-                backgroundColor: 'transparent',
-                elevation: 0,
+                  default:
+                    return (
+                      <Image
+                        style={{width: 25, height: 25}}
+                        resizeMode="contain"
+                        source={require('./assets/ic_home.png')}
+                      />
+                    );
+                }
               },
-              headerTitleAlign: 'center',
-            }}
-            options={{header: () => null}}
-          />
-          <Tab.Screen
-            name="SearchScreen"
-            component={SearchScreen}
-            initialParams={{client: client, userId: '618a1d2f194fbab325ff5427'}}
-            options={{header: () => null}}
-          />
-          <Tab.Screen
-            name="AddPostScreen"
-            component={AddPostScreen}
-            initialParams={{client: client, userId: '618a1d2f194fbab325ff5427'}}
-            options={{header: () => null}}
-          />
-          <Tab.Screen
-            name="ProfileScreen"
-            component={ProfileScreen}
-            initialParams={{userId: '618a1d2f194fbab325ff5427'}}
-            options={{header: () => null}}
-          />
-        </Tab.Navigator>
-      </ApolloProvider>
-    </NavigationContainer>
+              tabBarActiveBackgroundColor: 'lightblue',
+              tabBarActiveTintColor: 'transparent',
+              tabBarInactiveTintColor: 'transparent',
+              tabBarShowLabel: false,
+
+              tabBarHideOnKeyboard: true,
+            })}>
+            <Tab.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              initialParams={{userId: '618a1d2f194fbab325ff5427'}}
+              options={{
+                title: 'Prezent',
+                headerStyle: {
+                  backgroundColor: 'transparent',
+                  elevation: 0,
+                },
+                headerTitleAlign: 'center',
+              }}
+              options={{header: () => null}}
+            />
+            <Tab.Screen
+              name="SearchScreen"
+              component={SearchScreen}
+              initialParams={{
+                client: client,
+                userId: '618a1d2f194fbab325ff5427',
+              }}
+              options={{header: () => null}}
+            />
+            <Tab.Screen
+              name="AddPostScreen"
+              component={AddPostScreen}
+              initialParams={{
+                client: client,
+                userId: '618a1d2f194fbab325ff5427',
+              }}
+              options={{header: () => null}}
+            />
+            <Tab.Screen
+              name="ProfileScreen"
+              component={ProfileScreen}
+              initialParams={{userId: '618a1d2f194fbab325ff5427'}}
+              options={{header: () => null}}
+            />
+          </Tab.Navigator>
+        </ApolloProvider>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
