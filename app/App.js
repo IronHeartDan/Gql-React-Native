@@ -11,7 +11,6 @@ import React, {useEffect, useState} from 'react';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchScreen from './screens/SearchScreen';
 import {Button, Dimensions, Image, Text, TextInput, View} from 'react-native';
@@ -22,80 +21,46 @@ const ic_add = require('./assets/ic_add.png');
 const ic_account = require('./assets/ic_account.png');
 
 import auth from '@react-native-firebase/auth';
+import Authentication from './screens/Authentication';
 
 const client = new ApolloClient({
   // headers: {
   //   apiKey: 'RxRbVa46XSDA8neqdJT5mTCIWNPTJ9E6VJjtY3LVf9QiN8hy1UedF5BVgzpxOysD',
   // },
   // uri: 'https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-hibwe/graphql',
-  uri: 'http://192.168.0.109:4000/graphql',
+  uri: 'http://192.168.0.106:4000/graphql',
   cache: new InMemoryCache(),
 });
 
-const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const App = () => {
   var {height, width} = Dimensions.get('window');
   const [user, setUser] = useState(null);
-  const [phone, setPhone] = useState(null);
 
   useEffect(() => {
     if (auth().currentUser) {
       setUser(auth().currentUser);
     }
+    auth().onAuthStateChanged(user => {
+      console.log(`User Checking>>> ${user}`);
+      if (user) {
+        setUser(user);
+      } else {
+        setUser(null);
+      }
+    });
   }, []);
 
-  const sendOTP = async () => {
-    if (!phone) {
-      alert('Enter Valid Phone');
-    } else {
-      let code = await auth().signInWithPhoneNumber(`+91${phone}`);
-      console.log(code);
-    }
-  };
-
-  // if (!user) {
-  //   return (
-  //     <View style={{height: '100%', backgroundColor: 'white'}}>
-  //       <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-  //         <Text style={{fontSize: 50}}>Login</Text>
-  //       </View>
-  //       <View
-  //         style={{
-  //           alignItems: 'center',
-  //           justifyContent: 'center',
-  //         }}>
-  //         <Image
-  //           style={{width: '100%', height: 250}}
-  //           resizeMode="contain"
-  //           source={require('./assets/asset_login.png')}
-  //         />
-  //       </View>
-  //       <View
-  //         style={{
-  //           flex: 1,
-  //           alignItems: 'center',
-  //           justifyContent: 'flex-end',
-  //           padding: 10,
-  //         }}>
-  //         <TextInput
-  //           style={{padding: 10, width: '100%'}}
-  //           placeholder="Phone"
-  //           keyboardType="number-pad"
-  //           maxLength={10}
-  //           onChangeText={text =>
-  //             text.length == 10 ? setPhone(text) : setPhone(null)
-  //           }
-  //         />
-
-  //         <View style={{width: '100%'}}>
-  //           <Button onPress={() => sendOTP()} title="Login" />
-  //         </View>
-  //       </View>
-  //     </View>
-  //   );
-  // }
+  if (!user) {
+    return (
+      <NavigationContainer>
+        <ApolloProvider client={client}>
+          <Authentication client={client} />
+        </ApolloProvider>
+      </NavigationContainer>
+    );
+  }
 
   return (
     <NavigationContainer>

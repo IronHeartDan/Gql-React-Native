@@ -10,6 +10,8 @@ import {
 
 import {useQuery, gql} from '@apollo/client';
 
+import auth from '@react-native-firebase/auth';
+
 const ProfileScreenHeader = ({userId, navigation, connection}) => {
   console.log(`Watch THISS>>>>>>> ${connection}`);
   const profileQuery = gql`
@@ -55,7 +57,9 @@ const ProfileScreenHeader = ({userId, navigation, connection}) => {
         {connection ? (
           <Text style={{padding: 5, color: 'blue'}}>Following</Text>
         ) : typeof connection == 'undefined' ? (
-          <></>
+          <>
+            <Button title="LogOut" onPress={() => auth().signOut()} />
+          </>
         ) : (
           <Button title="Follow" />
         )}
