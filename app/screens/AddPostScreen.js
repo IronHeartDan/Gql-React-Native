@@ -1,23 +1,21 @@
 import CameraRoll from '@react-native-community/cameraroll';
+import storage from '@react-native-firebase/storage';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useEffect, useState} from 'react';
 import {
-  View,
-  Text,
-  PermissionsAndroid,
   Alert,
-  Modal,
-  FlatList,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  StatusBar,
-  TextInput,
   Button,
   Dimensions,
-  StyleSheet,
+  FlatList,
+  Image,
+  Modal,
+  PermissionsAndroid,
+  StatusBar,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import storage from '@react-native-firebase/storage';
 
 const AddPostScreen = () => {
   const Stack = createNativeStackNavigator();

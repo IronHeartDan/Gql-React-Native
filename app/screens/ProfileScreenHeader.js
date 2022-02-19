@@ -1,16 +1,14 @@
+import {gql, useQuery} from '@apollo/client';
+import auth from '@react-native-firebase/auth';
 import React from 'react';
 import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableOpacity,
   Button,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-
-import {useQuery, gql} from '@apollo/client';
-
-import auth from '@react-native-firebase/auth';
 
 const ProfileScreenHeader = ({userId, navigation, connection}) => {
   console.log(`Watch THISS>>>>>>> ${connection}`);
@@ -34,6 +32,8 @@ const ProfileScreenHeader = ({userId, navigation, connection}) => {
 
   if (loading) return <Text>Lodaing..</Text>;
   if (error) return <Text>{error.message}</Text>;
+
+  console.log(data);
 
   return (
     <View style={styles.info}>

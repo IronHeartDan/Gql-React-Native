@@ -6,63 +6,29 @@
  * @flow strict-local
  */
 
-import {ApolloClient, ApolloProvider, InMemoryCache} from '@apollo/client';
-import React, {useEffect, useState} from 'react';
-import HomeScreen from './screens/HomeScreen';
-import ProfileScreen from './screens/ProfileScreen';
+import {ApolloProvider} from '@apollo/client';
 import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SearchScreen from './screens/SearchScreen';
-import {Button, Dimensions, Image, Text, TextInput, View} from 'react-native';
+import React from 'react';
+import {Image} from 'react-native';
+import {Provider} from 'react-redux';
+import Store from './redux/store/Store';
 import AddPostScreen from './screens/AddPostScreen';
+import Authentication from './screens/Authentication';
+import HomeScreen from './screens/HomeScreen';
+import MainScreen from './screens/MainScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import SearchScreen from './screens/SearchScreen';
 const ic_home = require('./assets/ic_home.png');
 const ic_search = require('./assets/ic_search.png');
 const ic_add = require('./assets/ic_add.png');
 const ic_account = require('./assets/ic_account.png');
 
-import auth from '@react-native-firebase/auth';
-import Authentication from './screens/Authentication';
-import {Provider} from 'react-redux';
-import Store from './redux/store/Store';
-
-const client = new ApolloClient({
-  // headers: {
-  //   apiKey: 'RxRbVa46XSDA8neqdJT5mTCIWNPTJ9E6VJjtY3LVf9QiN8hy1UedF5BVgzpxOysD',
-  // },
-  // uri: 'https://ap-south-1.aws.realm.mongodb.com/api/client/v2.0/app/application-0-hibwe/graphql',
-  uri: 'http://192.168.0.106:4000/graphql',
-  cache: new InMemoryCache(),
-});
-
-const Tab = createBottomTabNavigator();
-
 const App = () => {
-  var {height, width} = Dimensions.get('window');
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    if (auth().currentUser) {
-      setUser(auth().currentUser);
-    }
-    auth().onAuthStateChanged(user => {
-      console.log(`User Checking>>> ${user}`);
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
-    });
-  }, []);
-
-  if (!user) {
-    return (
-      <Provider store={Store}>
-        <NavigationContainer>
-          <Authentication />
-        </NavigationContainer>
-      </Provider>
-    );
-  }
+  return (
+    <Provider store={Store}>
+      <MainScreen />
+    </Provider>
+  );
 
   return (
     <Provider store={Store}>
@@ -128,7 +94,7 @@ const App = () => {
             <Tab.Screen
               name="HomeScreen"
               component={HomeScreen}
-              initialParams={{userId: '618a1d2f194fbab325ff5427'}}
+              initialParams={{userId: '61b5a9496d15e3c28ddeb923'}}
               options={{
                 title: 'Prezent',
                 headerStyle: {
@@ -144,7 +110,7 @@ const App = () => {
               component={SearchScreen}
               initialParams={{
                 client: client,
-                userId: '618a1d2f194fbab325ff5427',
+                userId: '61b5a9496d15e3c28ddeb923',
               }}
               options={{header: () => null}}
             />
@@ -153,14 +119,14 @@ const App = () => {
               component={AddPostScreen}
               initialParams={{
                 client: client,
-                userId: '618a1d2f194fbab325ff5427',
+                userId: '61b5a9496d15e3c28ddeb923',
               }}
               options={{header: () => null}}
             />
             <Tab.Screen
               name="ProfileScreen"
               component={ProfileScreen}
-              initialParams={{userId: '618a1d2f194fbab325ff5427'}}
+              initialParams={{userId: '61b5a9496d15e3c28ddeb923'}}
               options={{header: () => null}}
             />
           </Tab.Navigator>

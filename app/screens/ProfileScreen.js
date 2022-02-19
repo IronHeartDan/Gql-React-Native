@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from 'react';
-
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ProfileScreenPosts from './ProfileScreenPosts';
-import FollowingScreen from './FollowingScreen';
-import FollowerScreen from './FollowerScreen';
 import {gql} from '@apollo/client';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useEffect, useState} from 'react';
+import FollowerScreen from './FollowerScreen';
+import FollowingScreen from './FollowingScreen';
+import ProfileScreenPosts from './ProfileScreenPosts';
 
 const ProfileScreen = ({route, navigation}) => {
   const {userId, connection, client} = route.params;

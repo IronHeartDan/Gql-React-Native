@@ -10,14 +10,18 @@ const UserName = ({navigation}) => {
   const [err, setErr] = useState(false);
 
   const checkUserName = async data => {
-    let res = await client.query({
-      query: gql`
-      query  {
-  checkUserName(userName: "${data}")
-}
-`,
-    });
-    setErr(res.data.checkUserName);
+    try {
+      let res = await client.query({
+        query: gql`
+        query  {
+    checkUserName(userName: "${data}")
+  }
+  `,
+      });
+      setErr(res.data.checkUserName);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -49,17 +53,17 @@ const UserName = ({navigation}) => {
           checkUserName(text);
         }}
         style={{
-          borderBottomWidth: err ? 1 : userName.length > 3 ? 5 : 0,
+          borderBottomWidth: err ? 1 : userName && userName.length > 3 ? 5 : 0,
           borderBottomColor: err
             ? 'red'
-            : userName.length > 3
+            : userName && userName.length > 3
             ? 'lightgreen'
-            : 'none',
+            : 'transparent',
         }}
       />
       <Button
         title="Next"
-        disabled={err}
+        disabled={err ? err : (userName && userName.length) > 3 ? false : true}
         onPress={() => navigation.navigate('EmailPass', {userName: userName})}
       />
     </View>

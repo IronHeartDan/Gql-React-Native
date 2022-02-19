@@ -1,24 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import {gql} from '@apollo/client';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
 import {
   FlatList,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
   Image,
-  TouchableOpacity,
-  Alert,
-  Button,
-  Platform,
+  Text,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-
-import {useQuery, gql} from '@apollo/client';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ProfileScreen from './ProfileScreen';
 
 const SearchScreen = ({route}) => {

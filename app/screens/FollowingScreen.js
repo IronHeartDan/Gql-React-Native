@@ -1,6 +1,6 @@
+import {gql, useQuery} from '@apollo/client';
 import React from 'react';
-import {View, Text, FlatList, TouchableOpacity, Image} from 'react-native';
-import {useQuery, gql} from '@apollo/client';
+import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 
 const FollowingScreen = ({route, navigation}) => {
   const {userId} = route.params;

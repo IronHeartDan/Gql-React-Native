@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
-import {View, Text, TextInput, StyleSheet, Button} from 'react-native';
 import {gql} from '@apollo/client';
 import auth from '@react-native-firebase/auth';
+import React, {useState} from 'react';
+import {Button, StyleSheet, TextInput, View} from 'react-native';
 
 const RegisterScreen = ({route}) => {
   const [userName, setUserName] = useState(null);

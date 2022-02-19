@@ -1,14 +1,14 @@
+import {gql, useQuery} from '@apollo/client';
 import React from 'react';
 import {
-  View,
-  Text,
-  SafeAreaView,
   FlatList,
   Image,
+  SafeAreaView,
   StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import {useQuery, gql} from '@apollo/client';
 import ProfileScreenHeader from './ProfileScreenHeader';
 
 const ProfileScreenPosts = ({route, navigation}) => {

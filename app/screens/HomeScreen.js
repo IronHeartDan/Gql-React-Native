@@ -1,28 +1,18 @@
+import {gql, useQuery} from '@apollo/client';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React, {useState} from 'react';
 import {
   FlatList,
+  Image,
   SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
-  View,
-  Image,
   TouchableOpacity,
-  Alert,
-  Button,
-  Platform,
-  TextInput,
-  TouchableHighlight,
+  View,
 } from 'react-native';
-import {useQuery, gql} from '@apollo/client';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import ProfileScreenPosts from './ProfileScreenPosts';
 import ProfileScreen from './ProfileScreen';
 
 const HomeScreen = ({route, navigation}) => {
-
   const {userId} = route.params;
   const Stack = createNativeStackNavigator();
 
